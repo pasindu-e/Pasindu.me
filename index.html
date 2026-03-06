@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>A Special Message ✨</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
@@ -11,15 +13,28 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        html {
+            height: 100%;
+            overflow-x: hidden;
         }
 
         body {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
             min-height: 100vh;
+            height: 100%;
             font-family: 'Poppins', sans-serif;
             overflow-x: hidden;
             position: relative;
             animation: backgroundShift 10s ease-in-out infinite alternate;
+            will-change: background;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .romantic-bg {
@@ -39,10 +54,12 @@
 
         .container-fluid {
             min-height: 100vh;
+            min-height: -webkit-fill-available;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+            padding: max(20px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
         }
 
         .welcome-screen {
@@ -55,16 +72,18 @@
             text-align: center;
             color: white;
             opacity: 0;
-            transform: scale(0.9);
-            transition: all 1s ease;
+            transform: scale(0.95);
+            transition: all 1s cubic-bezier(0.4, 0.0, 0.2, 1);
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
+            height: 100vh;
+            height: -webkit-fill-available;
             z-index: 1000;
             background: inherit;
+            will-change: opacity, transform;
         }
 
         .photo-holding-screen.show {
@@ -77,7 +96,8 @@
 
         .photo-holding-screen.hide {
             opacity: 0;
-            transform: scale(1.1);
+            transform: scale(1.05);
+            pointer-events: none;
         }
 
         .surprise-screen {
@@ -96,35 +116,43 @@
         }
 
         .holding-photo {
-            width: 300px;
-            height: 300px;
+            width: min(280px, 70vw);
+            height: min(280px, 70vw);
+            max-width: 300px;
+            max-height: 300px;
             border-radius: 50%;
             object-fit: cover;
-            border: 6px solid transparent;
+            border: 5px solid transparent;
             background: linear-gradient(45deg, #ff006e, #fb5607, #ffbe0b, #8338ec, #3a86ff);
             background-clip: padding-box;
-            padding: 4px;
-            margin: 2rem auto;
+            padding: 3px;
+            margin: 1.5rem auto;
             display: block;
             box-shadow: 
                 0 0 40px rgba(255, 107, 157, 0.8),
                 0 0 80px rgba(131, 56, 236, 0.6),
                 0 15px 30px rgba(0, 0, 0, 0.4);
-            animation: photoEntrance 1.5s ease-out, photoGlow 2s ease-in-out infinite alternate 1.5s, photoFloat 3s ease-in-out infinite 1.5s;
+            animation: photoEntrance 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55), 
+                       photoGlow 2s ease-in-out infinite alternate 1.5s, 
+                       photoFloat 3s ease-in-out infinite 1.5s;
             filter: brightness(1.2) contrast(1.2) saturate(1.3);
+            will-change: transform, filter;
         }
 
         .holding-title {
             font-family: 'Dancing Script', cursive;
-            font-size: 4.5rem;
-            margin: 2rem 0;
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            margin: 1.5rem 0;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3), 0 0 30px rgba(255, 107, 157, 0.8);
             background: linear-gradient(45deg, #ff006e, #fb5607, #ffbe0b, #8338ec, #3a86ff);
             background-size: 400% 400%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: heartbeat 2s ease-in-out infinite, rainbowText 3s linear infinite, pulse 1.5s ease-in-out infinite;
+            animation: heartbeat 2s ease-in-out infinite, 
+                       rainbowText 3s linear infinite, 
+                       pulse 1.5s ease-in-out infinite;
+            will-change: transform, background-position;
         }
 
         .stage-one {
@@ -151,7 +179,8 @@
 
         .welcome-screen.hide {
             opacity: 0;
-            transform: translateY(-50px);
+            transform: translateY(-30px);
+            pointer-events: none;
         }
 
         h1 {
@@ -454,8 +483,9 @@
                 transform: scale(0) rotate(-180deg);
                 opacity: 0;
             }
-            50% {
-                transform: scale(1.1) rotate(-90deg);
+            60% {
+                transform: scale(1.05) rotate(-60deg);
+                opacity: 0.8;
             }
             100% {
                 transform: scale(1) rotate(0deg);
@@ -469,12 +499,14 @@
                     0 0 20px rgba(255, 107, 157, 0.4),
                     0 0 40px rgba(131, 56, 236, 0.3),
                     0 10px 20px rgba(0, 0, 0, 0.3);
+                filter: brightness(1.2) contrast(1.2) saturate(1.3);
             }
             100% {
                 box-shadow: 
                     0 0 40px rgba(255, 107, 157, 0.8),
                     0 0 80px rgba(131, 56, 236, 0.6),
                     0 15px 30px rgba(0, 0, 0, 0.4);
+                filter: brightness(1.3) contrast(1.3) saturate(1.4);
             }
         }
 
@@ -521,71 +553,114 @@
 
         /* Mobile Optimizations */
         @media (max-width: 768px) {
+            .container-fluid {
+                padding: max(15px, env(safe-area-inset-top)) max(15px, env(safe-area-inset-right)) max(15px, env(safe-area-inset-bottom)) max(15px, env(safe-area-inset-left));
+            }
+            
             h1 {
-                font-size: 2.5rem;
+                font-size: clamp(1.8rem, 6vw, 2.5rem);
+                margin-bottom: 1rem;
             }
             
             h2 {
-                font-size: 3rem;
+                font-size: clamp(2rem, 7vw, 3rem);
+                margin-bottom: 1.5rem;
             }
             
             .subtitle {
-                font-size: 1.1rem;
+                font-size: clamp(1rem, 4vw, 1.1rem);
+                margin-bottom: 1.5rem;
+                line-height: 1.4;
             }
             
             .love-message {
-                font-size: 1.2rem;
+                font-size: clamp(1rem, 4vw, 1.2rem);
+                line-height: 1.6;
             }
             
             .names {
-                font-size: 1.8rem;
+                font-size: clamp(1.4rem, 5.5vw, 1.8rem);
+                line-height: 1.4;
             }
             
             .surprise-btn {
-                padding: 12px 30px;
-                font-size: 1.1rem;
+                padding: 12px 25px;
+                font-size: clamp(1rem, 4vw, 1.1rem);
+                border-radius: 40px;
             }
             
             .holding-photo {
-                width: 250px;
-                height: 250px;
+                width: min(200px, 60vw);
+                height: min(200px, 60vw);
             }
             
             .holding-title {
-                font-size: 3.5rem;
+                font-size: clamp(2rem, 7vw, 3.5rem);
+                margin: 1rem 0;
+            }
+            
+            .photo-holding-screen .photo-frame div {
+                width: min(200px, 60vw) !important;
+                height: min(200px, 60vw) !important;
+                font-size: clamp(0.9rem, 3.5vw, 1.2rem) !important;
+                margin: 1rem auto !important;
             }
         }
 
         @media (max-width: 480px) {
             .container-fluid {
-                padding: 15px;
+                padding: max(10px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
             }
             
             h1 {
-                font-size: 2rem;
+                font-size: clamp(1.6rem, 5.5vw, 2rem);
             }
             
             h2 {
-                font-size: 2.5rem;
+                font-size: clamp(1.8rem, 6.5vw, 2.5rem);
             }
             
             .love-message {
-                font-size: 1.1rem;
+                font-size: clamp(0.95rem, 3.8vw, 1.1rem);
+                margin: 1.5rem 0;
             }
             
             .holding-photo {
-                width: 220px;
-                height: 220px;
+                width: min(170px, 55vw);
+                height: min(170px, 55vw);
             }
             
             .holding-title {
-                font-size: 2.8rem;
+                font-size: clamp(1.8rem, 6.5vw, 2.8rem);
             }
             
             .photo-holding-screen .photo-frame div {
-                width: 220px !important;
-                height: 220px !important;
-                font-size: 1.2rem !important;
+                width: min(170px, 55vw) !important;
+                height: min(170px, 55vw) !important;
+                font-size: clamp(0.8rem, 3.2vw, 1rem) !important;
+            }
+            
+            .quote {
+                font-size: clamp(0.9rem, 3.5vw, 1rem);
+                margin-top: 1.5rem;
+                line-height: 1.5;
+            }
+        }
+
+        /* iPhone 15 and similar devices - specific optimizations */
+        @media (max-width: 430px) and (max-height: 932px) {
+            .holding-photo {
+                width: min(160px, 50vw);
+                height: min(160px, 50vw);
+            }
+            
+            .holding-title {
+                font-size: clamp(1.6rem, 6vw, 2.5rem);
+                margin: 0.8rem 0;
+            }
+            
+            .container-fluid {
+                padding: max(8px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right)) max(8px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
             }
         }
     </style>
@@ -665,16 +740,26 @@
             const photoHoldingScreen = document.getElementById('photoHoldingScreen');
             const surpriseScreen = document.getElementById('surpriseScreen');
             
+            // Prevent multiple clicks
+            if (photoHoldingScreen.classList.contains('show')) return;
+            
             // Hide welcome screen
             welcomeScreen.classList.add('hide');
             
             // Show photo holding screen first
             setTimeout(() => {
                 welcomeScreen.style.display = 'none';
-                photoHoldingScreen.classList.add('show');
+                photoHoldingScreen.style.display = 'flex';
                 
-                // Start photo sparkles for holding screen
-                addPhotoSparkles();
+                // Force reflow to ensure display change takes effect
+                photoHoldingScreen.offsetHeight;
+                
+                setTimeout(() => {
+                    photoHoldingScreen.classList.add('show');
+                    
+                    // Start photo sparkles for holding screen
+                    addPhotoSparkles();
+                }, 50);
                 
                 // After 4 seconds, hide holding screen and show main content
                 setTimeout(() => {
@@ -683,238 +768,361 @@
                     // After fade out, show the main surprise content
                     setTimeout(() => {
                         photoHoldingScreen.style.display = 'none';
-                        surpriseScreen.classList.add('show');
+                        surpriseScreen.style.display = 'block';
                         
-                        // Start all the romantic effects
-                        createFloatingHearts();
-                        addSparkles();
-                    }, 1000); // Wait for fade out
+                        // Force reflow
+                        surpriseScreen.offsetHeight;
+                        
+                        setTimeout(() => {
+                            surpriseScreen.classList.add('show');
+                            
+                            // Start all the romantic effects
+                            setTimeout(() => {
+                                createFloatingHearts();
+                                addSparkles();
+                            }, 300);
+                        }, 50);
+                        
+                    }, 800); // Wait for fade out
                     
                 }, 4000); // Hold photo for 4 seconds
                 
-            }, 500);
-        }
-
-        function createFloatingHearts() {
-            setInterval(() => {
-                if (document.getElementById('surpriseScreen').classList.contains('show')) {
-                    const heartEmojis = ['💖', '💕', '💝', '💗', '💘', '💙', '💜', '🧡', '💚'];
-                    const heart = document.createElement('div');
-                    heart.innerHTML = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
-                    heart.className = 'heart';
-                    heart.style.left = Math.random() * 100 + '%';
-                    heart.style.animationDelay = Math.random() * 2 + 's';
-                    heart.style.fontSize = (Math.random() * 15 + 20) + 'px';
-                    heart.style.filter = `hue-rotate(${Math.random() * 360}deg)`;
-                    heart.style.animationDuration = (Math.random() * 2 + 4) + 's';
-                    document.body.appendChild(heart);
-                    
-                    // Remove heart after animation
-                    setTimeout(() => {
-                        if (heart.parentNode) {
-                            heart.parentNode.removeChild(heart);
-                        }
-                    }, 8000);
-                }
-            }, 500);
-        }
-
-        function addSparkles() {
-            const sparkleEmojis = ['✨', '💫', '⭐', '🌟'];
-            
-            setInterval(() => {
-                if (document.getElementById('surpriseScreen').classList.contains('show')) {
-                    const sparkle = document.createElement('div');
-                    sparkle.innerHTML = sparkleEmojis[Math.floor(Math.random() * sparkleEmojis.length)];
-                    sparkle.className = 'heart';
-                    sparkle.style.left = Math.random() * 100 + '%';
-                    sparkle.style.animationDelay = Math.random() * 3 + 's';
-                    sparkle.style.fontSize = (Math.random() * 8 + 12) + 'px';
-                    sparkle.style.animationDuration = (Math.random() * 3 + 4) + 's';
-                    document.body.appendChild(sparkle);
-                    
-                    setTimeout(() => {
-                        if (sparkle.parentNode) {
-                            sparkle.parentNode.removeChild(sparkle);
-                        }
-                    }, 7000);
-                }
-            }, 1500);
-        }
-
-        // Add some ambient animations on load
-        document.addEventListener('DOMContentLoaded', function() {
-            // Create subtle background animations
-            const bg = document.querySelector('.romantic-bg');
-            
-            setInterval(() => {
-                bg.style.filter = `hue-rotate(${Math.sin(Date.now() * 0.001) * 30}deg)`;
-            }, 50);
-            
-            // Create magical particles
-            createMagicalParticles();
-            
-            // Add dynamic color cycling to body
-            let hue = 0;
-            setInterval(() => {
-                hue = (hue + 0.5) % 360;
-                document.body.style.filter = `hue-rotate(${Math.sin(Date.now() * 0.001) * 10}deg)`;
-            }, 100);
-        });
-
-        function createMagicalParticles() {
-            setInterval(() => {
-                const colors = ['#ff006e', '#fb5607', '#ffbe0b', '#8338ec', '#3a86ff', '#00d4ff', '#ff9a00'];
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.width = (Math.random() * 6 + 4) + 'px';
-                particle.style.height = particle.style.width;
-                particle.style.background = `radial-gradient(circle, ${colors[Math.floor(Math.random() * colors.length)]} 0%, transparent 70%)`;
-                particle.style.animationDelay = Math.random() * 3 + 's';
-                particle.style.animationDuration = (Math.random() * 4 + 6) + 's';
-                document.body.appendChild(particle);
-                
-                setTimeout(() => {
-                    if (particle.parentNode) {
-                        particle.parentNode.removeChild(particle);
-                    }
-                }, 10000);
             }, 300);
         }
 
-        // Add touch effects for mobile
+        let heartInterval, sparkleInterval, photoSparkleInterval;
+        let animationsActive = false;
+
+        function createFloatingHearts() {
+            if (heartInterval) clearInterval(heartInterval);
+            animationsActive = true;
+            
+            heartInterval = setInterval(() => {
+                if (!document.getElementById('surpriseScreen').classList.contains('show') || !animationsActive) {
+                    clearInterval(heartInterval);
+                    return;
+                }
+                
+                const heartEmojis = ['💖', '💕', '💝', '💗', '💘', '💙', '💜', '🧡', '💚'];
+                const heart = document.createElement('div');
+                heart.innerHTML = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+                heart.className = 'heart';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDelay = Math.random() * 2 + 's';
+                heart.style.fontSize = (Math.random() * 15 + 20) + 'px';
+                heart.style.filter = `hue-rotate(${Math.random() * 360}deg)`;
+                heart.style.animationDuration = (Math.random() * 2 + 4) + 's';
+                heart.style.pointerEvents = 'none';
+                heart.style.willChange = 'transform, opacity';
+                document.body.appendChild(heart);
+                
+                // Remove heart after animation with proper cleanup
+                setTimeout(() => {
+                    if (heart && heart.parentNode) {
+                        try {
+                            heart.parentNode.removeChild(heart);
+                        } catch (e) {
+                            // Element already removed
+                        }
+                    }
+                }, 8000);
+            }, 800);
+        }
+
+        function addSparkles() {
+            if (sparkleInterval) clearInterval(sparkleInterval);
+            
+            sparkleInterval = setInterval(() => {
+                if (!document.getElementById('surpriseScreen').classList.contains('show') || !animationsActive) {
+                    clearInterval(sparkleInterval);
+                    return;
+                }
+                
+                const sparkleEmojis = ['✨', '💫', '⭐', '🌟'];
+                const sparkle = document.createElement('div');
+                sparkle.innerHTML = sparkleEmojis[Math.floor(Math.random() * sparkleEmojis.length)];
+                sparkle.className = 'heart';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.animationDelay = Math.random() * 3 + 's';
+                sparkle.style.fontSize = (Math.random() * 8 + 12) + 'px';
+                sparkle.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                sparkle.style.pointerEvents = 'none';
+                sparkle.style.willChange = 'transform, opacity';
+                document.body.appendChild(sparkle);
+                
+                setTimeout(() => {
+                    if (sparkle && sparkle.parentNode) {
+                        try {
+                            sparkle.parentNode.removeChild(sparkle);
+                        } catch (e) {
+                            // Element already removed
+                        }
+                    }
+                }, 7000);
+            }, 2000);
+        }
+
+        // Performance optimizations and mobile handling
+        let magicalParticleInterval;
+        let lastTouchTime = 0;
+        let isTransitioning = false;
+
+        // Add some ambient animations on load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Optimize for mobile devices
+            if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+                document.body.style.webkitTouchCallout = 'none';
+                document.body.style.webkitUserSelect = 'none';
+            }
+            
+            // Create subtle background animations
+            const bg = document.querySelector('.romantic-bg');
+            let hueValue = 0;
+            
+            function updateBackground() {
+                if (!isTransitioning) {
+                    hueValue = (hueValue + 0.2) % 360;
+                    bg.style.filter = `hue-rotate(${Math.sin(Date.now() * 0.001) * 15 + hueValue * 0.1}deg)`;
+                }
+                requestAnimationFrame(updateBackground);
+            }
+            updateBackground();
+            
+            // Create magical particles with performance throttling
+            createMagicalParticles();
+        });
+
+        function createMagicalParticles() {
+            if (magicalParticleInterval) clearInterval(magicalParticleInterval);
+            
+            // Check for mobile device once
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            
+            magicalParticleInterval = setInterval(() => {
+                // Throttle particles on mobile for performance
+                const particleCount = isMobile ? 1 : 2;
+                
+                for (let i = 0; i < particleCount; i++) {
+                    const colors = ['#ff006e', '#fb5607', '#ffbe0b', '#8338ec', '#3a86ff', '#00d4ff', '#ff9a00'];
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.width = (Math.random() * 4 + 3) + 'px';
+                    particle.style.height = particle.style.width;
+                    particle.style.background = `radial-gradient(circle, ${colors[Math.floor(Math.random() * colors.length)]} 0%, transparent 70%)`;
+                    particle.style.animationDelay = Math.random() * 3 + 's';
+                    particle.style.animationDuration = (Math.random() * 4 + 6) + 's';
+                    particle.style.pointerEvents = 'none';
+                    particle.style.willChange = 'transform, opacity';
+                    document.body.appendChild(particle);
+                    
+                    setTimeout(() => {
+                        if (particle && particle.parentNode) {
+                            try {
+                                particle.parentNode.removeChild(particle);
+                            } catch (e) {
+                                // Element already removed
+                            }
+                        }
+                    }, 10000);
+                }
+            }, isMobile ? 800 : 400);
+        }
+
+        // Add touch effects for mobile with debouncing
         document.addEventListener('touchstart', function(e) {
-            if (document.getElementById('photoHoldingScreen').classList.contains('show') || document.getElementById('surpriseScreen').classList.contains('show')) {
+            // Don't prevent default for buttons and interactive elements
+            const target = e.target.closest('button, input, select, textarea, a');
+            if (!target) {
+                // Only prevent default for non-interactive areas
+                e.preventDefault();
+            }
+            
+            const now = Date.now();
+            if (now - lastTouchTime < 200) return; // Debounce rapid touches
+            lastTouchTime = now;
+            
+            if (document.getElementById('photoHoldingScreen').classList.contains('show') || 
+                document.getElementById('surpriseScreen').classList.contains('show')) {
+                
                 const touch = e.touches[0];
                 
-                // Create multiple hearts on touch
-                for (let i = 0; i < 3; i++) {
+                // Create multiple hearts on touch with performance optimization
+                const heartCount = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ? 2 : 3;
+                
+                for (let i = 0; i < heartCount; i++) {
                     setTimeout(() => {
                         const ripple = document.createElement('div');
                         const heartEmojis = ['💕', '💖', '💗', '💝', '✨', '🌟'];
                         ripple.innerHTML = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
                         ripple.style.position = 'fixed';
-                        ripple.style.left = (touch.clientX + (Math.random() - 0.5) * 60) + 'px';
-                        ripple.style.top = (touch.clientY + (Math.random() - 0.5) * 60) + 'px';
-                        ripple.style.fontSize = (Math.random() * 10 + 20) + 'px';
+                        ripple.style.left = (touch.clientX + (Math.random() - 0.5) * 40) + 'px';
+                        ripple.style.top = (touch.clientY + (Math.random() - 0.5) * 40) + 'px';
+                        ripple.style.fontSize = (Math.random() * 8 + 18) + 'px';
                         ripple.style.pointerEvents = 'none';
-                        ripple.style.animation = 'floatUp 3s linear';
+                        ripple.style.animation = 'floatUp 2.5s linear';
                         ripple.style.zIndex = '1001';
                         ripple.style.filter = `hue-rotate(${Math.random() * 360}deg)`;
+                        ripple.style.willChange = 'transform, opacity';
                         document.body.appendChild(ripple);
                         
                         setTimeout(() => {
-                            if (ripple.parentNode) {
-                                ripple.parentNode.removeChild(ripple);
+                            if (ripple && ripple.parentNode) {
+                                try {
+                                    ripple.parentNode.removeChild(ripple);
+                                } catch (e) {
+                                    // Element already removed
+                                }
                             }
-                        }, 3000);
-                    }, i * 100);
+                        }, 2500);
+                    }, i * 50);
                 }
                 
-                // Create explosion effect on touch
+                // Create optimized explosion effect on touch
                 createTouchExplosion(touch.clientX, touch.clientY);
             }
-        });
-
+        }, { passive: false });
+                        
         function createTouchExplosion(x, y) {
             const colors = ['#ff006e', '#fb5607', '#ffbe0b', '#8338ec', '#3a86ff'];
+            const particleCount = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ? 5 : 8;
             
-            for (let i = 0; i < 8; i++) {
+            for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
                 particle.style.position = 'fixed';
                 particle.style.left = x + 'px';
                 particle.style.top = y + 'px';
-                particle.style.width = '4px';
-                particle.style.height = '4px';
+                particle.style.width = '3px';
+                particle.style.height = '3px';
                 particle.style.borderRadius = '50%';
                 particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
                 particle.style.pointerEvents = 'none';
                 particle.style.zIndex = '1002';
+                particle.style.willChange = 'transform, opacity';
                 
-                const angle = (i / 8) * Math.PI * 2;
-                const velocity = Math.random() * 100 + 50;
+                const angle = (i / particleCount) * Math.PI * 2;
+                const velocity = Math.random() * 80 + 40;
                 const vx = Math.cos(angle) * velocity;
                 const vy = Math.sin(angle) * velocity;
                 
                 let startTime = Date.now();
                 function animateParticle() {
                     const elapsed = Date.now() - startTime;
-                    const progress = elapsed / 2000;
+                    const progress = elapsed / 1500;
                     
-                    if (progress < 1) {
+                    if (progress < 1 && particle.parentNode) {
                         particle.style.left = (x + vx * progress) + 'px';
-                        particle.style.top = (y + vy * progress + 100 * progress * progress) + 'px';
+                        particle.style.top = (y + vy * progress + 60 * progress * progress) + 'px';
                         particle.style.opacity = 1 - progress;
                         requestAnimationFrame(animateParticle);
                     } else {
-                        if (particle.parentNode) {
-                            particle.parentNode.removeChild(particle);
+                        if (particle && particle.parentNode) {
+                            try {
+                                particle.parentNode.removeChild(particle);
+                            } catch (e) {
+                                // Element already removed
+                            }
                         }
                     }
                 }
                 
                 document.body.appendChild(particle);
-                animateParticle();
+                requestAnimationFrame(animateParticle);
             }
         }
 
         function addPhotoSparkles() {
-            setInterval(() => {
-                if (document.getElementById('photoHoldingScreen').classList.contains('show') && !document.getElementById('photoHoldingScreen').classList.contains('hide')) {
-                    const photo = document.querySelector('.holding-photo');
-                    if (photo && photo.style.display !== 'none') {
-                        const rect = photo.getBoundingClientRect();
+            if (photoSparkleInterval) clearInterval(photoSparkleInterval);
+            
+            photoSparkleInterval = setInterval(() => {
+                const holdingScreen = document.getElementById('photoHoldingScreen');
+                if (!holdingScreen.classList.contains('show') || holdingScreen.classList.contains('hide')) {
+                    clearInterval(photoSparkleInterval);
+                    return;
+                }
+                
+                const photo = document.querySelector('.holding-photo');
+                if (photo && photo.style.display !== 'none') {
+                    const rect = photo.getBoundingClientRect();
+                    const sparkleEmojis = ['✨', '💫', '🌟', '💖', '💕'];
+                    
+                    for (let i = 0; i < 2; i++) {
+                        const sparkle = document.createElement('div');
+                        sparkle.innerHTML = sparkleEmojis[Math.floor(Math.random() * sparkleEmojis.length)];
+                        sparkle.style.position = 'fixed';
+                        sparkle.style.left = (rect.left + Math.random() * rect.width) + 'px';
+                        sparkle.style.top = (rect.top + Math.random() * rect.height) + 'px';
+                        sparkle.style.fontSize = (Math.random() * 10 + 15) + 'px';
+                        sparkle.style.pointerEvents = 'none';
+                        sparkle.style.zIndex = '1001';
+                        sparkle.style.animation = 'floatUp 3s linear';
+                        sparkle.style.filter = `hue-rotate(${Math.random() * 360}deg)`;
+                        sparkle.style.willChange = 'transform, opacity';
+                        document.body.appendChild(sparkle);
+                        
+                        setTimeout(() => {
+                            if (sparkle && sparkle.parentNode) {
+                                try {
+                                    sparkle.parentNode.removeChild(sparkle);
+                                } catch (e) {
+                                    // Element already removed
+                                }
+                            }
+                        }, 3000);
+                    }
+                } else {
+                    // Handle placeholder sparkles with same safety checks
+                    const placeholder = document.querySelector('.photo-holding-screen .photo-frame div');
+                    if (placeholder && placeholder.style.display !== 'none') {
+                        const rect = placeholder.getBoundingClientRect();
                         const sparkleEmojis = ['✨', '💫', '🌟', '💖', '💕'];
                         
-                        for (let i = 0; i < 3; i++) {
-                            const sparkle = document.createElement('div');
-                            sparkle.innerHTML = sparkleEmojis[Math.floor(Math.random() * sparkleEmojis.length)];
-                            sparkle.style.position = 'fixed';
-                            sparkle.style.left = (rect.left + Math.random() * rect.width) + 'px';
-                            sparkle.style.top = (rect.top + Math.random() * rect.height) + 'px';
-                            sparkle.style.fontSize = (Math.random() * 10 + 15) + 'px';
-                            sparkle.style.pointerEvents = 'none';
-                            sparkle.style.zIndex = '1001';
-                            sparkle.style.animation = 'floatUp 3s linear';
-                            sparkle.style.filter = `hue-rotate(${Math.random() * 360}deg)`;
-                            document.body.appendChild(sparkle);
-                            
-                            setTimeout(() => {
-                                if (sparkle.parentNode) {
+                        const sparkle = document.createElement('div');
+                        sparkle.innerHTML = sparkleEmojis[Math.floor(Math.random() * sparkleEmojis.length)];
+                        sparkle.style.position = 'fixed';
+                        sparkle.style.left = (rect.left + Math.random() * rect.width) + 'px';
+                        sparkle.style.top = (rect.top + Math.random() * rect.height) + 'px';
+                        sparkle.style.fontSize = (Math.random() * 10 + 15) + 'px';
+                        sparkle.style.pointerEvents = 'none';
+                        sparkle.style.zIndex = '1001';
+                        sparkle.style.animation = 'floatUp 3s linear';
+                        sparkle.style.filter = `hue-rotate(${Math.random() * 360}deg)`;
+                        sparkle.style.willChange = 'transform, opacity';
+                        document.body.appendChild(sparkle);
+                        
+                        setTimeout(() => {
+                            if (sparkle && sparkle.parentNode) {
+                                try {
                                     sparkle.parentNode.removeChild(sparkle);
+                                } catch (e) {
+                                    // Element already removed
                                 }
-                            }, 3000);
-                        }
-                    } else {
-                        // Handle placeholder sparkles
-                        const placeholder = document.querySelector('.photo-holding-screen .photo-frame div[style*="display: flex"]');
-                        if (placeholder) {
-                            const rect = placeholder.getBoundingClientRect();
-                            const sparkleEmojis = ['✨', '💫', '🌟', '💖', '💕'];
-                            
-                            const sparkle = document.createElement('div');
-                            sparkle.innerHTML = sparkleEmojis[Math.floor(Math.random() * sparkleEmojis.length)];
-                            sparkle.style.position = 'fixed';
-                            sparkle.style.left = (rect.left + Math.random() * rect.width) + 'px';
-                            sparkle.style.top = (rect.top + Math.random() * rect.height) + 'px';
-                            sparkle.style.fontSize = (Math.random() * 10 + 15) + 'px';
-                            sparkle.style.pointerEvents = 'none';
-                            sparkle.style.zIndex = '1001';
-                            sparkle.style.animation = 'floatUp 3s linear';
-                            sparkle.style.filter = `hue-rotate(${Math.random() * 360}deg)`;
-                            document.body.appendChild(sparkle);
-                            
-                            setTimeout(() => {
-                                if (sparkle.parentNode) {
-                                    sparkle.parentNode.removeChild(sparkle);
-                                }
-                            }, 3000);
-                        }
+                            }
+                        }, 3000);
                     }
                 }
-            }, 1500);
+            }, 2000);
         }
+
+        // Cleanup on page unload to prevent memory leaks
+        window.addEventListener('beforeunload', function() {
+            animationsActive = false;
+            if (heartInterval) clearInterval(heartInterval);
+            if (sparkleInterval) clearInterval(sparkleInterval);
+            if (photoSparkleInterval) clearInterval(photoSparkleInterval);
+            if (magicalParticleInterval) clearInterval(magicalParticleInterval);
+        });
+
+        // Handle orientation change for mobile devices  
+        window.addEventListener('orientationchange', function() {
+            setTimeout(() => {
+                // Force layout recalculation after orientation change
+                document.body.style.height = window.innerHeight + 'px';
+                setTimeout(() => {
+                    document.body.style.height = '100%';
+                }, 100);
+            }, 100);
+        });
     </script>
 </body>
 </html>
