@@ -25,7 +25,7 @@
         }
 
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background: linear-gradient(135deg, #4a6cf7 0%, #5b2c87 50%, #e056fd 100%);
             min-height: 100vh;
             height: 100%;
             font-family: 'Poppins', sans-serif;
@@ -44,10 +44,10 @@
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.4) 0%, transparent 50%), 
-                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.4) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 60% 70%, rgba(255, 0, 150, 0.2) 0%, transparent 50%);
+                radial-gradient(circle at 20% 80%, rgba(74, 108, 247, 0.6) 0%, transparent 50%), 
+                radial-gradient(circle at 80% 20%, rgba(224, 86, 253, 0.6) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(91, 44, 135, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 60% 70%, rgba(139, 69, 19, 0.3) 0%, transparent 50%);
             z-index: -2;
             animation: bgFloat 15s ease-in-out infinite;
         }
@@ -143,7 +143,7 @@
             font-family: 'Dancing Script', cursive;
             font-size: clamp(2.5rem, 8vw, 4.5rem);
             margin: 1.5rem 0;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3), 0 0 30px rgba(255, 107, 157, 0.8);
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 30px rgba(255, 107, 157, 1);
             background: linear-gradient(45deg, #ff006e, #fb5607, #ffbe0b, #8338ec, #3a86ff);
             background-size: 400% 400%;
             -webkit-background-clip: text;
@@ -153,6 +153,7 @@
                        rainbowText 3s linear infinite, 
                        pulse 1.5s ease-in-out infinite;
             will-change: transform, background-position;
+            color: white;
         }
 
         .stage-one {
@@ -187,33 +188,37 @@
             font-family: 'Dancing Script', cursive;
             font-size: 3rem;
             margin-bottom: 1.5rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3), 0 0 20px rgba(255, 107, 157, 0.5);
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.7), 0 0 20px rgba(255, 107, 157, 0.8);
             background: linear-gradient(45deg, #ff6b9d, #00d4ff, #ff6b9d, #c44569);
             background-size: 300% 300%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             animation: gradientText 4s ease-in-out infinite, textGlow 2s ease-in-out infinite alternate;
+            color: white;
         }
 
         h2 {
             font-family: 'Dancing Script', cursive;
             font-size: 4rem;
             margin-bottom: 2rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3), 0 0 30px rgba(255, 107, 157, 0.8);
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.7), 0 0 30px rgba(255, 107, 157, 1);
             background: linear-gradient(45deg, #ff006e, #fb5607, #ffbe0b, #8338ec, #3a86ff);
             background-size: 400% 400%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             animation: heartbeat 2s ease-in-out infinite, rainbowText 3s linear infinite, pulse 1.5s ease-in-out infinite;
+            color: white;
         }
 
         .subtitle {
             font-size: 1.2rem;
             margin-bottom: 2rem;
-            opacity: 0.9;
+            opacity: 0.95;
             font-weight: 300;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+            color: #ffffff;
         }
 
         .love-message {
@@ -221,6 +226,8 @@
             line-height: 1.8;
             margin: 2rem 0;
             animation: fadeInUp 1s ease delay-0.5s both;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+            color: #ffffff;
         }
 
         .surprise-btn {
@@ -277,8 +284,10 @@
             font-style: italic;
             font-size: 1.1rem;
             margin-top: 2rem;
-            opacity: 0.8;
+            opacity: 0.9;
             animation: fadeInUp 1s ease delay-1.5s both;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+            color: #ffffff;
         }
 
         /* Floating Hearts Animation */
@@ -331,13 +340,13 @@
 
         @keyframes backgroundShift {
             0% {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+                background: linear-gradient(135deg, #4a6cf7 0%, #5b2c87 50%, #e056fd 100%);
             }
             50% {
-                background: linear-gradient(135deg, #a8edea 0%, #fed6e3 50%, #d299c2 100%);
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
             }
             100% {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+                background: linear-gradient(135deg, #4a6cf7 0%, #5b2c87 50%, #e056fd 100%);
             }
         }
 
