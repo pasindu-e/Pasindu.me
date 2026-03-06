@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Message ✨</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            position: relative;
+            animation: backgroundShift 10s ease-in-out infinite alternate;
+        }
+
+        .romantic-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.4) 0%, transparent 50%), 
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 60% 70%, rgba(255, 0, 150, 0.2) 0%, transparent 50%);
+            z-index: -2;
+            animation: bgFloat 15s ease-in-out infinite;
+        }
+
+        .container-fluid {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .welcome-screen {
+            text-align: center;
+            color: white;
+            transition: all 0.5s ease;
+        }
+
+        .photo-holding-screen {
+            text-align: center;
+            color: white;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 1s ease;
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            background: inherit;
+        }
+
+        .photo-holding-screen.show {
+            opacity: 1;
+            transform: scale(1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .photo-holding-screen.hide {
+            opacity: 0;
+            transform: scale(1.1);
+        }
+
+        .surprise-screen {
+            text-align: center;
+            color: white;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s ease;
+            display: none;
+        }
+
+        .surprise-screen.show {
+            opacity: 1;
+            transform: translateY(0);
+            display: block;
+        }
+
+        .holding-photo {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 6px solid transparent;
+            background: linear-gradient(45deg, #ff006e, #fb5607, #ffbe0b, #8338ec, #3a86ff);
+            background-clip: padding-box;
+            padding: 4px;
+            margin: 2rem auto;
+            display: block;
+            box-shadow: 
+                0 0 40px rgba(255, 107, 157, 0.8),
+                0 0 80px rgba(131, 56, 236, 0.6),
+                0 15px 30px rgba(0, 0, 0, 0.4);
+            animation: photoEntrance 1.5s ease-out, photoGlow 2s ease-in-out infinite alternate 1.5s, photoFloat 3s ease-in-out infinite 1.5s;
+            filter: brightness(1.2) contrast(1.2) saturate(1.3);
+        }
+
+        .holding-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 4.5rem;
+            margin: 2rem 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3), 0 0 30px rgba(255, 107, 157, 0.8);
+            background: linear-gradient(45deg, #ff006e, #fb5607, #ffbe0b, #8338ec, #3a86ff);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: heartbeat 2s ease-in-out infinite, rainbowText 3s linear infinite, pulse 1.5s ease-in-out infinite;
+        }
+
+        .stage-one {
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 1.2s ease;
+        }
+
+        .stage-one.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .stage-two {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease;
+        }
+
+        .stage-two.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .welcome-screen.hide {
+            opacity: 0;
+            transform: translateY(-50px);
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3), 0 0 20px rgba(255, 107, 157, 0.5);
+            background: linear-gradient(45deg, #ff6b9d, #00d4ff, #ff6b9d, #c44569);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientText 4s ease-in-out infinite, textGlow 2s ease-in-out infinite alternate;
+        }
+
+        h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3), 0 0 30px rgba(255, 107, 157, 0.8);
+            background: linear-gradient(45deg, #ff006e, #fb5607, #ffbe0b, #8338ec, #3a86ff);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: heartbeat 2s ease-in-out infinite, rainbowText 3s linear infinite, pulse 1.5s ease-in-out infinite;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .love-message {
+            font-size: 1.4rem;
+            line-height: 1.8;
+            margin: 2rem 0;
+            animation: fadeInUp 1s ease delay-0.5s both;
+        }
+
+        .surprise-btn {
+            background: linear-gradient(45deg, #ff006e, #fb5607, #ffbe0b, #8338ec);
+            background-size: 300% 300%;
+            border: none;
+            color: white;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(255, 107, 157, 0.4), 0 0 20px rgba(255, 107, 157, 0.3);
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            animation: buttonGlow 2s ease-in-out infinite alternate, gradientShift 4s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .surprise-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(255, 107, 157, 0.6), 0 0 30px rgba(255, 107, 157, 0.8);
+            animation: buttonGlow 1s ease-in-out infinite alternate, gradientShift 2s ease-in-out infinite, wiggle 0.5s ease-in-out;
+        }
+
+        .surprise-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        .names {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            background: linear-gradient(45deg, #ff006e, #00d4ff, #ff006e);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 1.5rem 0;
+            animation: fadeInUp 1s ease delay-1s both, gradientText 3s ease-in-out infinite, bounce 2s ease-in-out infinite;
+            text-shadow: 0 0 10px rgba(255, 107, 157, 0.5);
+        }
+
+        .quote {
+            font-style: italic;
+            font-size: 1.1rem;
+            margin-top: 2rem;
+            opacity: 0.8;
+            animation: fadeInUp 1s ease delay-1.5s both;
+        }
+
+        /* Floating Hearts Animation */
+        .heart {
+            position: fixed;
+            top: -10px;
+            font-size: 20px;
+            color: #ff6b9d;
+            opacity: 0.8;
+            animation: floatUp 6s linear infinite;
+            z-index: 1000;
+        }
+
+        @keyframes floatUp {
+            0% {
+                top: 100vh;
+                opacity: 1;
+                transform: scale(0.8);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(1);
+            }
+            100% {
+                top: -100px;
+                opacity: 0;
+                transform: scale(0.6);
+            }
+        }
+
+        @keyframes heartbeat {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes backgroundShift {
+            0% {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            }
+            50% {
+                background: linear-gradient(135deg, #a8edea 0%, #fed6e3 50%, #d299c2 100%);
+            }
+            100% {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            }
+        }
+
+        @keyframes bgFloat {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+        }
+
+        @keyframes gradientText {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        @keyframes rainbowText {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 100% 50%;
+            }
+        }
+
+        @keyframes textGlow {
+            0% {
+                filter: drop-shadow(0 0 5px rgba(255, 107, 157, 0.5));
+            }
+            100% {
+                filter: drop-shadow(0 0 20px rgba(255, 107, 157, 0.8));
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes buttonGlow {
+            0% {
+                box-shadow: 0 8px 25px rgba(255, 107, 157, 0.4), 0 0 20px rgba(255, 107, 157, 0.3);
+            }
+            100% {
+                box-shadow: 0 8px 25px rgba(255, 107, 157, 0.6), 0 0 30px rgba(131, 56, 236, 0.5);
+            }
+        }
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                left: -100%;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+
+        @keyframes wiggle {
+            0%, 100% {
+                transform: translateY(-5px) scale(1.05) rotate(0deg);
+            }
+            25% {
+                transform: translateY(-5px) scale(1.05) rotate(1deg);
+            }
+            75% {
+                transform: translateY(-5px) scale(1.05) rotate(-1deg);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* Photo Styles */
+        .couple-photo {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid transparent;
+            background: linear-gradient(45deg, #ff006e, #fb5607, #ffbe0b, #8338ec, #3a86ff);
+            background-clip: padding-box;
+            padding: 3px;
+            margin: 2rem auto;
+            display: block;
+            box-shadow: 
+                0 0 30px rgba(255, 107, 157, 0.6),
+                0 0 60px rgba(131, 56, 236, 0.4),
+                0 10px 20px rgba(0, 0, 0, 0.3);
+            animation: photoEntrance 1.5s ease-out, photoGlow 3s ease-in-out infinite alternate 1.5s, photoFloat 4s ease-in-out infinite 1.5s;
+            filter: brightness(1.1) contrast(1.1) saturate(1.2);
+        }
+
+        .photo-frame {
+            position: relative;
+            display: inline-block;
+            animation: fadeInUp 1s ease delay-0.8s both;
+        }
+
+        .photo-frame::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, #ff006e, #fb5607, #ffbe0b, #8338ec, #3a86ff);
+            background-size: 400% 400%;
+            border-radius: 50%;
+            z-index: -1;
+            animation: rainbowRotate 4s linear infinite;
+            filter: blur(8px);
+        }
+
+        @keyframes photoEntrance {
+            0% {
+                transform: scale(0) rotate(-180deg);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.1) rotate(-90deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        @keyframes photoGlow {
+            0% {
+                box-shadow: 
+                    0 0 20px rgba(255, 107, 157, 0.4),
+                    0 0 40px rgba(131, 56, 236, 0.3),
+                    0 10px 20px rgba(0, 0, 0, 0.3);
+            }
+            100% {
+                box-shadow: 
+                    0 0 40px rgba(255, 107, 157, 0.8),
+                    0 0 80px rgba(131, 56, 236, 0.6),
+                    0 15px 30px rgba(0, 0, 0, 0.4);
+            }
+        }
+
+        @keyframes photoFloat {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-10px) rotate(2deg);
+            }
+        }
+
+        @keyframes rainbowRotate {
+            0% {
+                background-position: 0% 50%;
+                transform: rotate(0deg);
+            }
+            50% {
+                background-position: 100% 50%;
+                transform: rotate(180deg);
+            }
+            100% {
+                background-position: 0% 50%;
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes particleFloat {
+            0% {
+                top: 100vh;
+                opacity: 1;
+                transform: scale(0) rotate(0deg);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1) rotate(180deg);
+            }
+            100% {
+                top: -100px;
+                opacity: 0;
+                transform: scale(0) rotate(360deg);
+            }
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            h2 {
+                font-size: 3rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .love-message {
+                font-size: 1.2rem;
+            }
+            
+            .names {
+                font-size: 1.8rem;
+            }
+            
+            .surprise-btn {
+                padding: 12px 30px;
+                font-size: 1.1rem;
+            }
+            
+            .holding-photo {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .holding-title {
+                font-size: 3.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container-fluid {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 2.5rem;
+            }
+            
+            .love-message {
+                font-size: 1.1rem;
+            }
+            
+            .holding-photo {
+                width: 220px;
+                height: 220px;
+            }
+            
+            .holding-title {
+                font-size: 2.8rem;
+            }
+            
+            .photo-holding-screen .photo-frame div {
+                width: 220px !important;
+                height: 220px !important;
+                font-size: 1.2rem !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="romantic-bg"></div>
+    
+    <div class="container-fluid">
+        <!-- Welcome Screen -->
+        <div class="welcome-screen" id="welcomeScreen">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6">
+                    <h1>✨ Something Special ✨</h1>
+                    <p class="subtitle">Someone took the time to create something beautiful just for you...</p>
+                    <p class="subtitle">Are you ready to see what it is?</p>
+                    <button class="surprise-btn" onclick="showSurprise()">
+                        💖 Open Your Surprise 💖
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Photo Holding Screen -->
+        <div class="photo-holding-screen" id="photoHoldingScreen">
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <div class="col-md-8 col-lg-6">
+                        <h1 class="holding-title">💕 I Love You 💕</h1>
+                        
+                        <div class="photo-frame">
+                            <img src="IMG_1579.jpeg" alt="Our Beautiful Moment" class="holding-photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            <div style="display: none; width: 300px; height: 300px; border-radius: 50%; background: linear-gradient(45deg, #ff006e, #fb5607, #ffbe0b, #8338ec); margin: 2rem auto; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.4rem; text-align: center; animation: photoEntrance 1.5s ease-out, photoGlow 2s ease-in-out infinite alternate 1.5s, photoFloat 3s ease-in-out infinite 1.5s; box-shadow: 0 0 40px rgba(255, 107, 157, 0.8); font-weight: 600;">
+                                Our Beautiful<br>Love Story 💕<br>Photo Here! 📸
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Surprise Screen -->
+        <div class="surprise-screen" id="surpriseScreen">
+            <div class="row justify-content-center">
+                <div class="col-md-10 col-lg-8">
+                    
+                    <h2 style="margin-bottom: 2rem;">💖 My Dearest Nikini 💖</h2>
+                    
+                    <div class="love-message">
+                        <p><strong>My Beautiful Queen,</strong></p>
+                        <p>Every day with you feels like a beautiful dream come true. You light up my world in ways I never thought possible.</p>
+                    </div>
+                    
+                    <div class="names">
+                        My Sweet <span style="color: #ffcccb;">Suduuu</span> ✨<br>
+                        My Precious <span style="color: #ffd1dc;">Manikaa</span> 💖
+                    </div>
+                    
+                    <div class="love-message">
+                        <p>Your smile is my sunshine, your laugh is my favorite melody, and your love is my greatest treasure.</p>
+                        <p><strong>I love you more than words can express! 💕</strong></p>
+                    </div>
+                    
+                    <div class="quote">
+                        "In all the world, there is no heart for me like yours.<br>
+                        In all the world, there is no love for you like mine." 💝
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function showSurprise() {
+            const welcomeScreen = document.getElementById('welcomeScreen');
+            const photoHoldingScreen = document.getElementById('photoHoldingScreen');
+            const surpriseScreen = document.getElementById('surpriseScreen');
+            
+            // Hide welcome screen
+            welcomeScreen.classList.add('hide');
+            
+            // Show photo holding screen first
+            setTimeout(() => {
+                welcomeScreen.style.display = 'none';
+                photoHoldingScreen.classList.add('show');
+                
+                // Start photo sparkles for holding screen
+                addPhotoSparkles();
+                
+                // After 4 seconds, hide holding screen and show main content
+                setTimeout(() => {
+                    photoHoldingScreen.classList.add('hide');
+                    
+                    // After fade out, show the main surprise content
+                    setTimeout(() => {
+                        photoHoldingScreen.style.display = 'none';
+                        surpriseScreen.classList.add('show');
+                        
+                        // Start all the romantic effects
+                        createFloatingHearts();
+                        addSparkles();
+                    }, 1000); // Wait for fade out
+                    
+                }, 4000); // Hold photo for 4 seconds
+                
+            }, 500);
+        }
+
+        function createFloatingHearts() {
+            setInterval(() => {
+                if (document.getElementById('surpriseScreen').classList.contains('show')) {
+                    const heartEmojis = ['💖', '💕', '💝', '💗', '💘', '💙', '💜', '🧡', '💚'];
+                    const heart = document.createElement('div');
+                    heart.innerHTML = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+                    heart.className = 'heart';
+                    heart.style.left = Math.random() * 100 + '%';
+                    heart.style.animationDelay = Math.random() * 2 + 's';
+                    heart.style.fontSize = (Math.random() * 15 + 20) + 'px';
+                    heart.style.filter = `hue-rotate(${Math.random() * 360}deg)`;
+                    heart.style.animationDuration = (Math.random() * 2 + 4) + 's';
+                    document.body.appendChild(heart);
+                    
+                    // Remove heart after animation
+                    setTimeout(() => {
+                        if (heart.parentNode) {
+                            heart.parentNode.removeChild(heart);
+                        }
+                    }, 8000);
+                }
+            }, 500);
+        }
+
+        function addSparkles() {
+            const sparkleEmojis = ['✨', '💫', '⭐', '🌟'];
+            
+            setInterval(() => {
+                if (document.getElementById('surpriseScreen').classList.contains('show')) {
+                    const sparkle = document.createElement('div');
+                    sparkle.innerHTML = sparkleEmojis[Math.floor(Math.random() * sparkleEmojis.length)];
+                    sparkle.className = 'heart';
+                    sparkle.style.left = Math.random() * 100 + '%';
+                    sparkle.style.animationDelay = Math.random() * 3 + 's';
+                    sparkle.style.fontSize = (Math.random() * 8 + 12) + 'px';
+                    sparkle.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                    document.body.appendChild(sparkle);
+                    
+                    setTimeout(() => {
+                        if (sparkle.parentNode) {
+                            sparkle.parentNode.removeChild(sparkle);
+                        }
+                    }, 7000);
+                }
+            }, 1500);
+        }
+
+        // Add some ambient animations on load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create subtle background animations
+            const bg = document.querySelector('.romantic-bg');
+            
+            setInterval(() => {
+                bg.style.filter = `hue-rotate(${Math.sin(Date.now() * 0.001) * 30}deg)`;
+            }, 50);
+            
+            // Create magical particles
+            createMagicalParticles();
+            
+            // Add dynamic color cycling to body
+            let hue = 0;
+            setInterval(() => {
+                hue = (hue + 0.5) % 360;
+                document.body.style.filter = `hue-rotate(${Math.sin(Date.now() * 0.001) * 10}deg)`;
+            }, 100);
+        });
+
+        function createMagicalParticles() {
+            setInterval(() => {
+                const colors = ['#ff006e', '#fb5607', '#ffbe0b', '#8338ec', '#3a86ff', '#00d4ff', '#ff9a00'];
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.width = (Math.random() * 6 + 4) + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.background = `radial-gradient(circle, ${colors[Math.floor(Math.random() * colors.length)]} 0%, transparent 70%)`;
+                particle.style.animationDelay = Math.random() * 3 + 's';
+                particle.style.animationDuration = (Math.random() * 4 + 6) + 's';
+                document.body.appendChild(particle);
+                
+                setTimeout(() => {
+                    if (particle.parentNode) {
+                        particle.parentNode.removeChild(particle);
+                    }
+                }, 10000);
+            }, 300);
+        }
+
+        // Add touch effects for mobile
+        document.addEventListener('touchstart', function(e) {
+            if (document.getElementById('photoHoldingScreen').classList.contains('show') || document.getElementById('surpriseScreen').classList.contains('show')) {
+                const touch = e.touches[0];
+                
+                // Create multiple hearts on touch
+                for (let i = 0; i < 3; i++) {
+                    setTimeout(() => {
+                        const ripple = document.createElement('div');
+                        const heartEmojis = ['💕', '💖', '💗', '💝', '✨', '🌟'];
+                        ripple.innerHTML = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+                        ripple.style.position = 'fixed';
+                        ripple.style.left = (touch.clientX + (Math.random() - 0.5) * 60) + 'px';
+                        ripple.style.top = (touch.clientY + (Math.random() - 0.5) * 60) + 'px';
+                        ripple.style.fontSize = (Math.random() * 10 + 20) + 'px';
+                        ripple.style.pointerEvents = 'none';
+                        ripple.style.animation = 'floatUp 3s linear';
+                        ripple.style.zIndex = '1001';
+                        ripple.style.filter = `hue-rotate(${Math.random() * 360}deg)`;
+                        document.body.appendChild(ripple);
+                        
+                        setTimeout(() => {
+                            if (ripple.parentNode) {
+                                ripple.parentNode.removeChild(ripple);
+                            }
+                        }, 3000);
+                    }, i * 100);
+                }
+                
+                // Create explosion effect on touch
+                createTouchExplosion(touch.clientX, touch.clientY);
+            }
+        });
+
+        function createTouchExplosion(x, y) {
+            const colors = ['#ff006e', '#fb5607', '#ffbe0b', '#8338ec', '#3a86ff'];
+            
+            for (let i = 0; i < 8; i++) {
+                const particle = document.createElement('div');
+                particle.style.position = 'fixed';
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.width = '4px';
+                particle.style.height = '4px';
+                particle.style.borderRadius = '50%';
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.pointerEvents = 'none';
+                particle.style.zIndex = '1002';
+                
+                const angle = (i / 8) * Math.PI * 2;
+                const velocity = Math.random() * 100 + 50;
+                const vx = Math.cos(angle) * velocity;
+                const vy = Math.sin(angle) * velocity;
+                
+                let startTime = Date.now();
+                function animateParticle() {
+                    const elapsed = Date.now() - startTime;
+                    const progress = elapsed / 2000;
+                    
+                    if (progress < 1) {
+                        particle.style.left = (x + vx * progress) + 'px';
+                        particle.style.top = (y + vy * progress + 100 * progress * progress) + 'px';
+                        particle.style.opacity = 1 - progress;
+                        requestAnimationFrame(animateParticle);
+                    } else {
+                        if (particle.parentNode) {
+                            particle.parentNode.removeChild(particle);
+                        }
+                    }
+                }
+                
+                document.body.appendChild(particle);
+                animateParticle();
+            }
+        }
+
+        function addPhotoSparkles() {
+            setInterval(() => {
+                if (document.getElementById('photoHoldingScreen').classList.contains('show') && !document.getElementById('photoHoldingScreen').classList.contains('hide')) {
+                    const photo = document.querySelector('.holding-photo');
+                    if (photo && photo.style.display !== 'none') {
+                        const rect = photo.getBoundingClientRect();
+                        const sparkleEmojis = ['✨', '💫', '🌟', '💖', '💕'];
+                        
+                        for (let i = 0; i < 3; i++) {
+                            const sparkle = document.createElement('div');
+                            sparkle.innerHTML = sparkleEmojis[Math.floor(Math.random() * sparkleEmojis.length)];
+                            sparkle.style.position = 'fixed';
+                            sparkle.style.left = (rect.left + Math.random() * rect.width) + 'px';
+                            sparkle.style.top = (rect.top + Math.random() * rect.height) + 'px';
+                            sparkle.style.fontSize = (Math.random() * 10 + 15) + 'px';
+                            sparkle.style.pointerEvents = 'none';
+                            sparkle.style.zIndex = '1001';
+                            sparkle.style.animation = 'floatUp 3s linear';
+                            sparkle.style.filter = `hue-rotate(${Math.random() * 360}deg)`;
+                            document.body.appendChild(sparkle);
+                            
+                            setTimeout(() => {
+                                if (sparkle.parentNode) {
+                                    sparkle.parentNode.removeChild(sparkle);
+                                }
+                            }, 3000);
+                        }
+                    } else {
+                        // Handle placeholder sparkles
+                        const placeholder = document.querySelector('.photo-holding-screen .photo-frame div[style*="display: flex"]');
+                        if (placeholder) {
+                            const rect = placeholder.getBoundingClientRect();
+                            const sparkleEmojis = ['✨', '💫', '🌟', '💖', '💕'];
+                            
+                            const sparkle = document.createElement('div');
+                            sparkle.innerHTML = sparkleEmojis[Math.floor(Math.random() * sparkleEmojis.length)];
+                            sparkle.style.position = 'fixed';
+                            sparkle.style.left = (rect.left + Math.random() * rect.width) + 'px';
+                            sparkle.style.top = (rect.top + Math.random() * rect.height) + 'px';
+                            sparkle.style.fontSize = (Math.random() * 10 + 15) + 'px';
+                            sparkle.style.pointerEvents = 'none';
+                            sparkle.style.zIndex = '1001';
+                            sparkle.style.animation = 'floatUp 3s linear';
+                            sparkle.style.filter = `hue-rotate(${Math.random() * 360}deg)`;
+                            document.body.appendChild(sparkle);
+                            
+                            setTimeout(() => {
+                                if (sparkle.parentNode) {
+                                    sparkle.parentNode.removeChild(sparkle);
+                                }
+                            }, 3000);
+                        }
+                    }
+                }
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
